@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
 const fetch = require("node-fetch");
 
 const endpoint = "https://swapi.dev/api/people";
@@ -16,7 +15,7 @@ router.get("/:id", async (req, res) => {
   const request = await fetch(`${endpoint}/${id}`);
   const fetchedCharacter = await request.json();
 
-  if (!fetchedCharacter) return res.status(404).send("No character with ID: " + id);
+  if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
 
   res.send(fetchedCharacter);
 });
