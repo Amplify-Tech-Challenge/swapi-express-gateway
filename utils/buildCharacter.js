@@ -1,9 +1,8 @@
 const fetch = require("node-fetch");
 
 const buildCharacterDetails = async character => {
-  // TODO refactor to check w/object.keys, push into array
   const { homeworld, films, species, vehicles, starships } = character;
-  const endpoints = [
+  const possibleEndpoints = [
     { homeworld },
     { films },
     { species },
@@ -11,11 +10,25 @@ const buildCharacterDetails = async character => {
     { starships },
   ];
 
-  //TODO pop out empty/invalid arrays
+  const validEndpoints = possibleEndpoints.reduce((endpointArray, endPointObject) => {
+    const key = Object.keys(endPointObject);
+    const value = endPointObject[key];
+
+    if (checkType(value, key) === "array") {
+      endpointArray.push(endPointObject);
+    } else if (checkType(value, key) === "string") {
+      endpointArray.push(endPointObject);
+    }
+    return endpointArray;
+  }, []);
+
+  console.log("valid", validEndpoints);
+
   //TODO consider purposeful breaks
   // get only whats asked
 
-  await endpoints.reduce(async (promises, objProperty) => {
+  await validEndpoints.reduce(async (promises, objProperty) => {
+  // await possibleEndpoints.reduce(async (promises, objProperty) => {
     const newObj = await promises;
     const key = Object.keys(objProperty);
     const endpoint = objProperty[key];
