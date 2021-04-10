@@ -16,39 +16,37 @@ const buildCharacterDetails = async character => {
     const value = endPointObject[key];
 
     if (checkType(value, key) === "array") {
-      endpointArray.push(endPointObject);
+      endpointArray.push([...key, value, 'array']);
     } else if (checkType(value, key) === "string") {
-      endpointArray.push(endPointObject);
+      endpointArray.push([...key, value, 'string']);
     }
+    
     return endpointArray;
   }, []);
 
-  console.log("valid", validEndpoints);
-
-
-  // REMOVE repetitive checks if array/string
-  // INSTEAD append property above before pushing into acc
-  // CHECK appended property below and proceed accordingly
-
-
-  await validEndpoints.reduce(async (promises, objProperty) => {
+  await validEndpoints.reduce(async (promises, endpointData) => {
+    const key = endpointData[0];
     const newObj = await promises;
-    const key = Object.keys(objProperty);
-    const endpoint = objProperty[key];
+    console.log(`processing ${key} (${endpointData[2]}) data`)
 
-    if (checkType(endpoint, key) === "array") {
-      const compiledArray = await endpoint.reduce(async (promises, el) => {
+    if (endpointData[2] === "array") {
+      const compiledArray = await endpointData[1].reduce(async (promises, el) => {
         const acc = await promises;
-        const data = await fetch(`${el}`);
+        const response = await fetch(`${el}`);
+        const data = await response.json()
         acc.push(data);
         return acc;
       }, []);
+      
       newObj[key] = compiledArray;
-    } else if (checkType(endpoint, key) === "string") {
-      const data = await fetch(`${endpoint}`);
-      newObj[key] = data;
+
+    } else if (endpointData[2] === "string") {
+      const data = await fetch(`${endpointData[1]}`);
+      newObj[key] = await data.json();
+
     }
     return newObj;
+
   }, character);
 
   return character;
@@ -56,16 +54,16 @@ const buildCharacterDetails = async character => {
 
 const checkType = (propertyValue, key) => {
   if (Array.isArray(propertyValue) && propertyValue.length) {
-    console.log(`${key} is a valid array of endpoints`);
+    // console.log(`${key} is a valid array of endpoints`);
     return "array";
   } else if (
     typeof propertyValue === "string" &&
     propertyValue.split("/")[0] === "http:"
   ) {
-    console.log(`${key} is a valid single endpoint`);
+    // console.log(`${key} is a valid single endpoint`);
     return "string";
   } else {
-    console.log(`${key} has no endpoints`);
+    // console.log(`${key} has no endpoints`);
     return false;
   }
 };
