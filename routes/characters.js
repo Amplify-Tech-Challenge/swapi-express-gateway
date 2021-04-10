@@ -4,6 +4,7 @@ const fetch = require("node-fetch");
 
 const endpoint = "https://swapi.dev/api/people";
 const allCharacters = require("../utils/getCharacters");
+const compileCharacter = require("../utils/buildCharacter")
 
 router.get("/", async (req, res) => {
   const characters = await allCharacters("test");
@@ -17,7 +18,9 @@ router.get("/:id", async (req, res) => {
 
   if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
 
-  res.send(fetchedCharacter);
+  const completedCharacter = await compileCharacter(fetchedCharacter)
+
+  res.send(completedCharacter);
 });
 
 module.exports = router;
