@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 
 const buildCharacterDetails = async character => {
   const { homeworld, films, species, vehicles, starships } = character;
+
   const possibleEndpoints = [
     { homeworld },
     { films },
@@ -24,11 +25,13 @@ const buildCharacterDetails = async character => {
 
   console.log("valid", validEndpoints);
 
-  //TODO consider purposeful breaks
-  // get only whats asked
+
+  // REMOVE repetitive checks if array/string
+  // INSTEAD append property above before pushing into acc
+  // CHECK appended property below and proceed accordingly
+
 
   await validEndpoints.reduce(async (promises, objProperty) => {
-  // await possibleEndpoints.reduce(async (promises, objProperty) => {
     const newObj = await promises;
     const key = Object.keys(objProperty);
     const endpoint = objProperty[key];
