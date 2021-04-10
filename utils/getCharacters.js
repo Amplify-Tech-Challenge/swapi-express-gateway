@@ -1,20 +1,17 @@
-const getCharacters = async mode => {
+const fetch = require('node-fetch');
+
+async function getCharacters(mode) {
   const endpoint = "https://swapi.dev/api/people/";
 
-  const getCharacterList = async (pageNo = 1) => {
+  async function getCharacterList(pageNo = 1) {
     const actualUrl = endpoint + `?page=${pageNo}`;
-
-    try {
-      const request = await fetch(actualUrl);
-      const data = await request.json();
-      const results = data.results;
-      return results;
-    } catch (e) {
-      res.status(400).end();
-    }
+    const request = await fetch(actualUrl);
+    const data = await request.json();
+    const results = data.results;
+    return results;
   };
 
-  const getEntireCharacterList = async (pageNo = 1) => {
+  async function getEntireCharacterList(pageNo = 1) {
     const results = await getCharacterList(pageNo);
     console.log("Retrieving data from API for page : " + pageNo);
 
@@ -39,4 +36,4 @@ const getCharacters = async mode => {
   return results;
 };
 
-export default getCharacters;
+module.exports = getCharacters;
