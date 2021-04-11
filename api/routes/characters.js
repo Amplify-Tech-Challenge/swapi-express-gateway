@@ -8,6 +8,8 @@ const compileCharacter = require("../utils/buildCharacter")
 
 router.get("/", async (req, res) => {
   const characters = await allCharacters("test");
+
+  if (!characters) return res.status(500).send("Cannot find character list, internal error");
   res.send(characters);
 });
 

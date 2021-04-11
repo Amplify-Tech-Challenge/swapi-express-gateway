@@ -18,7 +18,7 @@ const app = express()
 const helmet = require('helmet')
 const characters = require('./routes/characters')
 
-app.use(express.static(__dirname + '/static', { dotfiles: 'allow' }))
+app.use(express.static(__dirname, { dotfiles: 'allow' }))
 app.use(helmet())
 app.use(express.json())
 app.use('/api/characters', characters)
@@ -32,7 +32,8 @@ app.use('/api/characters', characters)
 // http://swapi-express-gateway.herokuapp.com/.well-known/acme-challenge/BGDCWi3TStcwgYPI_jS_rh2br-CTCX1zUePDbph1KFU
 // const httpsServer = https.createServer(getCert(), app).listen(443, () => console.log(`Server running on port: ${443}`))
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 80;
+// const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
 
 app.get("/", async (req, res) => {
