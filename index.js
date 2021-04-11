@@ -34,3 +34,7 @@ app.use('/api/characters', characters)
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`))
+
+app.get("/", async (req, res) => {
+  res.send('debugging branch');
+});
