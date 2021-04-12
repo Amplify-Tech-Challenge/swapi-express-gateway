@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
   const fetchedCharacter = await request.json();
 
   if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
-
+  
   const completedCharacter = await compileCharacter(fetchedCharacter)
 
   res.send(completedCharacter);

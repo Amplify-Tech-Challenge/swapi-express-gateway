@@ -3,6 +3,7 @@ const app = express()
 const characters = require('./routes/characters')
 
 app.use(express.json())
+app.use(express.static('public'));
 app.use('/api/characters', characters)
 
 const PORT = process.env.PORT || 4000;
