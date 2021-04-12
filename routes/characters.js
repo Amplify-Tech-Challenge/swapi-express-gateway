@@ -8,7 +8,7 @@ const compileCharacter = require("../utils/buildCharacter")
 
 router.get("/", async (req, res) => {
   // pass any arg into allCharacters() to return only 1 page of results
-  const characters = await allCharacters("test");
+  const characters = await allCharacters();
 
   if (!characters) return res.status(500).send("Something went sideways. Please contact the website admin");
 
