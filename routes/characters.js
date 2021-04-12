@@ -2,13 +2,27 @@ const express = require("express");
 const router = express.Router();
 const fetch = require("node-fetch");
 
-const endpoint = "https://swapi.dev/api/people";
+const endpoint = "https://swapi.py4e.com/api/people/";
 const allCharacters = require("../utils/getCharacters");
 const compileCharacter = require("../utils/buildCharacter")
 
 router.get("/", async (req, res) => {
+  // pass any arg into allCharacters() to return only 1 page of results
   const characters = await allCharacters("test");
   res.send(characters);
+});
+
+router.get("/ssg-paths", async (req, res) => {
+  // pass any arg into allCharacters() to return only 1 page of results
+  const characters = await allCharacters();
+  
+  const paths = characters.map(char => {
+    const splitUrl = char.url.split("/");
+    const id = splitUrl[splitUrl.length - 2];
+    return id;
+  });
+  
+  res.send(paths);
 });
 
 router.get("/:id", async (req, res) => {
