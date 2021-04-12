@@ -38,7 +38,9 @@ router.get("/:id", async (req, res) => {
   if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
 
   const compiledCharacter = await compileCharacter(fetchedCharacter)
-  const image = `/assets/images/characters/${id}.jpg`
+  // TODO understand non-hardcoded solution
+  // const image = `static/assets/images/characters/${id}.jpg`
+  const image = `https://swapi-express-gateway.herokuapp.com/assets/images/characters/${id}.jpg`
   const completeCharacter = {...compiledCharacter, image}
 
   res.send(completeCharacter);
