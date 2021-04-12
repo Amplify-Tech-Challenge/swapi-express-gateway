@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 async function getCharacters(mode) {
-  const endpoint = "https://swapi.dev/api/people/";
+  const endpoint = "https://swapi.py4e.com/api/people/";
 
   async function getCharacterList(pageNo = 1) {
     const actualUrl = endpoint + `?page=${pageNo}`;

@@ -1,4 +1,4 @@
-const baseUrl = "https://swapi.dev/api"
+const baseUrl = "https://swapi.py4e.com/api/people/"
 
 async function fetchQuery(path, params = null, endpoint) {
   let url;
