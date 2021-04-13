@@ -8,7 +8,7 @@ const compileCharacter = require("../utils/buildCharacter")
 
 router.get("/", async (req, res) => {
   // pass any arg into allCharacters() to return only 1 page of results
-  const characters = await allCharacters("test");
+  const characters = await allCharacters();
 
   if (!characters) return res.status(500).send("Something went sideways. Please contact the website admin");
 
@@ -37,9 +37,13 @@ router.get("/:id", async (req, res) => {
 
   if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
 
-  const completedCharacter = await compileCharacter(fetchedCharacter)
+  const compiledCharacter = await compileCharacter(fetchedCharacter)
+  // TODO understand non-hardcoded solution
+  // const image = `static/assets/images/characters/${id}.jpg`
+  const image = `https://swapi-express-gateway.herokuapp.com/assets/images/characters/${id}.jpg`
+  const completeCharacter = {...compiledCharacter, image}
 
-  res.send(completedCharacter);
+  res.send(completeCharacter);
 });
 
 module.exports = router;
