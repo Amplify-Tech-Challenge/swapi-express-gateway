@@ -15,6 +15,7 @@ const buildCharacterDetails = async character => {
     const key = Object.keys(endPointObject);
     const value = endPointObject[key];
 
+    // console.log(key, value)
     if (checkType(value, key) === "array") {
       endpointArray.push([...key, value, 'array']);
     } else if (checkType(value, key) === "string") {
@@ -23,7 +24,6 @@ const buildCharacterDetails = async character => {
     
     return endpointArray;
   }, []);
-
   await validEndpoints.reduce(async (promises, endpointData) => {
     const key = endpointData[0];
     const newObj = await promises;
@@ -53,14 +53,14 @@ const buildCharacterDetails = async character => {
 };
 
 const checkType = (propertyValue, key) => {
+  // console.log(key, propertyValue, typeof propertyValue);
   if (Array.isArray(propertyValue) && propertyValue.length) {
     // console.log(`${key} is a valid array of endpoints`);
     return "array";
   } else if (
     typeof propertyValue === "string" &&
-    propertyValue.split("/")[0] === "http:"
+    propertyValue.split("/")[0] === "https:"
   ) {
-    // console.log(`${key} is a valid single endpoint`);
     return "string";
   } else {
     // console.log(`${key} has no endpoints`);
