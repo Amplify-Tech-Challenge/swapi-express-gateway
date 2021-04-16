@@ -208,6 +208,10 @@ The function compiles a single list of all the characters. That list is then map
 
 A little win. Simply an endpoint to server static assets. My first exposure to this was needing to serve a file for `certbot` to authenticate a new SSL certificate...I had mistakenly thought it was somehow my own cer that had expired, which led down the deepest of rabbit holes. Well, it turns out it was the actual API that had expired SSL certs. I spent many hours trying to debug what was ultimately a broken source. Lessons learned...including how to serve static assets! Anyway, it's allowed me to serve up images and spice up the site.
 
+### Other Learning
+
+Express is a thing of beauty. It's extremely simple and generous in its advantages. To be able to apply middleware with one line of code that will allow me to traverse CORS issues across my endpoints, to bundle all my responses as JSON, to enable error handling for all endpoints, well geeze - that's pretty great! The available NPM packages make it simple, and with the semi-recent inclusion of ES6 syntax, I felt right at home. I'd love to dive back into Express and build out a backend for my past projects - my lessons have shown how simple it can be to build out full CRUD functionality while using `joi` to easily handle type checking. Very excited.
+
 ## Reflection
 
 #### TODOs
