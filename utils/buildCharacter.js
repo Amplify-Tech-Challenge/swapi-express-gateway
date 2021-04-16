@@ -23,7 +23,7 @@ const buildCharacterDetails = async character => {
     
     return endpointArray;
   }, []);
-
+  
   await validEndpoints.reduce(async (promises, endpointData) => {
     const key = endpointData[0];
     const newObj = await promises;
@@ -58,9 +58,8 @@ const checkType = (propertyValue, key) => {
     return "array";
   } else if (
     typeof propertyValue === "string" &&
-    propertyValue.split("/")[0] === "http:"
+    propertyValue.split("/")[0] === "https:"
   ) {
-    // console.log(`${key} is a valid single endpoint`);
     return "string";
   } else {
     // console.log(`${key} has no endpoints`);

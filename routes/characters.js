@@ -4,29 +4,42 @@ const fetch = require("node-fetch");
 
 const endpoint = "https://swapi.py4e.com/api/people/";
 const allCharacters = require("../utils/getCharacters");
-const compileCharacter = require("../utils/buildCharacter")
+const compileCharacter = require("../utils/buildCharacter");
 
 router.get("/", async (req, res) => {
-  // pass any arg into allCharacters() to return only 1 page of results
-  const characters = await allCharacters();
+  const {query} = req
+  const url = `${endpoint}?search=${query.search}`
+  
+  const response = await fetch(url)
+  const data = await response.json()
+  const results = data.results
 
-  if (!characters) return res.status(500).send("Something went sideways. Please contact the website admin");
+  const prunedList = results.map(c => {
+    const urlsplit = c.url.split("/");
+    const id = urlsplit[urlsplit.length - 2]
+    const image = `https://swapi-express-gateway.herokuapp.com/assets/images/characters/${id}.jpg`
+    const charObj = { name: c.name, id, image };
+    return charObj;
+  });
+  const orderedList = prunedList.sort((a, b) => a.url - b.url);
 
-  res.send(characters);
+  res.send(orderedList)
 });
 
 router.get("/ssg-paths", async (req, res) => {
-  // pass any arg into allCharacters() to return only 1 page of results
   const characters = await allCharacters();
-  
-  if (!characters) return res.status(500).send("Something went sideways. Please contact the website admin");
+
+  if (!characters)
+    return res
+      .status(500)
+      .send("I've got a bad feeling about this...Please contact the website admin");
 
   const paths = characters.map(char => {
     const splitUrl = char.url.split("/");
     const id = splitUrl[splitUrl.length - 2];
     return id;
   });
-  
+
   res.send(paths);
 });
 
@@ -35,13 +48,12 @@ router.get("/:id", async (req, res) => {
   const request = await fetch(`${endpoint}/${id}`);
   const fetchedCharacter = await request.json();
 
-  if (!fetchedCharacter.name) return res.status(404).send("No character with ID: " + id);
+  if (!fetchedCharacter.name)
+    return res.status(404).send("No character with ID: " + id);
 
-  const compiledCharacter = await compileCharacter(fetchedCharacter)
-  // TODO understand non-hardcoded solution
-  // const image = `static/assets/images/characters/${id}.jpg`
-  const image = `https://swapi-express-gateway.herokuapp.com/assets/images/characters/${id}.jpg`
-  const completeCharacter = {...compiledCharacter, image}
+  const compiledCharacter = await compileCharacter(fetchedCharacter);
+  const image = `https://swapi-express-gateway.herokuapp.com/assets/images/characters/${id}.jpg`;
+  const completeCharacter = { ...compiledCharacter, image };
 
   res.send(completeCharacter);
 });
